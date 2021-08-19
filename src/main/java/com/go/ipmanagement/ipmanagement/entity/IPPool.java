@@ -3,8 +3,7 @@ package com.go.ipmanagement.ipmanagement.entity;
 
 
 import java.io.Serializable;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,8 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
@@ -41,7 +43,9 @@ public class IPPool implements Serializable{
 	private String lowerBound;
 	private String upperBound;
 	
+	@JsonIgnore
+	@EqualsAndHashCode.Exclude
 	@OneToMany(mappedBy = "ipPool", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	private Set<IPAddress> ipAddresses = new TreeSet<>();
+	private List<IPAddress> ipAddresses;
 
 }

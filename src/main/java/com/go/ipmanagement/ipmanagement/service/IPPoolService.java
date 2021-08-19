@@ -1,7 +1,7 @@
 package com.go.ipmanagement.ipmanagement.service;
 
-import com.go.ipmanagement.ipmanagement.entity.IPPool;
+import com.go.ipmanagement.ipmanagement.dto.IPPoolDTO;
 
 public interface IPPoolService {
-		IPPool getIPPool(int id);
+		IPPoolDTO getIPPool(int id);
 }

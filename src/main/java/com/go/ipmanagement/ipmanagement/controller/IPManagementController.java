@@ -9,12 +9,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.go.ipmanagement.ipmanagement.dto.IPPoolDTO;
 import com.go.ipmanagement.ipmanagement.service.IPAddressService;
+import com.go.ipmanagement.ipmanagement.service.IPPoolService;
 
 @RestController
 public class IPManagementController {
 
 	@Autowired
 	private IPAddressService ipAddressService;
+	
+	@Autowired
+	private IPPoolService ipPoolService;
 
 	@PostMapping("/generateIP")
 	public IPPoolDTO generateIPAddress(@RequestParam(value = "poolId") int poolId,
@@ -23,9 +27,9 @@ public class IPManagementController {
 		return ipPoolDTO;
 	}
 
-	@GetMapping("/getIPPool")
+	@GetMapping("/getIPPool/{id}")
 	public IPPoolDTO getIPPool(@PathVariable("id") int poolId) {
 
-		return null;
+		return ipPoolService.getIPPool(poolId);
 	}
 }

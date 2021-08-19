@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.go.ipmanagement.ipmanagement.constant.IPManagementConstant;
 import com.go.ipmanagement.ipmanagement.entity.IPAddress;
 import com.go.ipmanagement.ipmanagement.entity.IPPool;
 
@@ -19,17 +20,19 @@ public class IPManagementUtility {
 		String[] startParts = new String[2];
 
 		if (pool.getIpAddresses().size() == 0) {
-			startParts = pool.getLowerBound().split("(?<=\\.)(?!.*\\.)");
+			startParts = pool.getLowerBound().split(IPManagementConstant.ipRegex);
 			start = Integer.parseInt(startParts[1]);
 		} else {
-			startParts = pool.getIpAddresses().iterator().next().getIpValue().split("(?<=\\.)(?!.*\\.)");
-			start = Integer.parseInt(startParts[1]) + 1;
+			startParts = pool.getIpAddresses().stream().sorted((o1, o2) -> o2.getId() - o1.getId())
+					.iterator().next()
+					.getIpValue().split(IPManagementConstant.ipRegex);
+			start = Integer.parseInt(startParts[1])+1;
 		}
 
-		for (int i = start; i < start + ipAmount; i++) {
+		for (int i = 0; i <ipAmount; i++) {
 			IPAddress ipAddress = new IPAddress();
 			ipAddress.setIpPool(pool);
-			ipAddress.setIpValue(startParts[0] + i);
+			ipAddress.setIpValue(startParts[0] + (start+i));
 			ipAddresses.add(ipAddress);
 		}
 		return ipAddresses;
