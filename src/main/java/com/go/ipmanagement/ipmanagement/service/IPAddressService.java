@@ -1,10 +1,11 @@
 package com.go.ipmanagement.ipmanagement.service;
 
 
+import com.go.ipmanagement.ipmanagement.dto.IPAddressDTO;
 import com.go.ipmanagement.ipmanagement.dto.IPPoolDTO;
 
 
 public interface IPAddressService {
 
-	IPPoolDTO generateIPAdress(int ipAmount, int poolId);
+	IPAddressDTO generateIPAdress(int ipAmount, int poolId);
 }

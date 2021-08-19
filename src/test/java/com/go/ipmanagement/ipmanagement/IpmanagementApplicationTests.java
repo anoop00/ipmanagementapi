@@ -57,6 +57,6 @@ class IpmanagementApplicationTests {
 		ipPool.setIpAddresses(Arrays.asList(ipAddress));
 		when(ipPoolRepository.findById(1)).thenReturn(Optional.of(ipPool));
 		when(ipAddressRepository.saveAll(Arrays.asList(ipAddress))).thenReturn(Arrays.asList(ipAddress));
-		assertEquals(1, ipAddressService.generateIPAdress(1, 1).getIpAddress().size());
+		assertEquals(1, ipAddressService.generateIPAdress(1, 1).getIpAddresses().size());
 	}
 }

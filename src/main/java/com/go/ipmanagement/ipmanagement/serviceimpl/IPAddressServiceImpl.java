@@ -9,12 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.go.ipmanagement.ipmanagement.constant.IPManagementConstant;
+import com.go.ipmanagement.ipmanagement.dto.IPAddressDTO;
 import com.go.ipmanagement.ipmanagement.dto.IPPoolDTO;
 import com.go.ipmanagement.ipmanagement.entity.IPAddress;
 import com.go.ipmanagement.ipmanagement.entity.IPPool;
 import com.go.ipmanagement.ipmanagement.exception.IPPoolCustomException;
 import com.go.ipmanagement.ipmanagement.exception.IPPoolNotFoundException;
-import com.go.ipmanagement.ipmanagement.mapper.IPPoolDTOMapper;
+import com.go.ipmanagement.ipmanagement.mapper.IPManagerDTOMapper;
 import com.go.ipmanagement.ipmanagement.repository.IPAddressRepository;
 import com.go.ipmanagement.ipmanagement.repository.IPPoolRepository;
 import com.go.ipmanagement.ipmanagement.service.IPAddressService;
@@ -38,7 +39,7 @@ public class IPAddressServiceImpl implements IPAddressService {
 
 	@Transactional
 	@Override
-	public IPPoolDTO generateIPAdress(int ipAmount, int poolId) {
+	public IPAddressDTO generateIPAdress(int ipAmount, int poolId) {
 
 		Optional<IPPool> ipPool = ipPoolRepository.findById(poolId);
 		if (ipPool.isPresent()) {
@@ -48,7 +49,7 @@ public class IPAddressServiceImpl implements IPAddressService {
 				ipAddressRepository.saveAll(ipAddress);
 				pool.setIpAddresses(ipAddress);
 				pool.setUsedCapacity(ipPool.get().getUsedCapacity() + ipAmount);
-				return IPPoolDTOMapper.getIPPoolDTO(pool);
+				return IPManagerDTOMapper.getAddressDTO(pool);
 			} else {
 				throw new IPPoolCustomException(IPManagementConstant.ipPoolErrorMessage + poolId);
 			}
