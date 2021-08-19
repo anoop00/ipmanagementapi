@@ -29,7 +29,6 @@ public class IPManagementController {
 
 	@GetMapping("/getIPPool/{id}")
 	public IPPoolDTO getIPPool(@PathVariable("id") int poolId) {
-
 		return ipPoolService.getIPPool(poolId);
 	}
 }
