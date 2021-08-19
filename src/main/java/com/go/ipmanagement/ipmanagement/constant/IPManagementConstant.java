@@ -6,4 +6,5 @@ public class IPManagementConstant {
 
 	public static final String ipRegex = "(?<=\\.)(?!.*\\.)";
 	public static final String ipPoolErrorMessage = "Insufficient IP Address Port available for the given pool Id ";
+	public static final String ipPoolNotFoundError = "No IP Pool exist in the database with given ID";
 }

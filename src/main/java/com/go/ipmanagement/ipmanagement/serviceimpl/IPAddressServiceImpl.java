@@ -1,6 +1,7 @@
 package com.go.ipmanagement.ipmanagement.serviceimpl;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -12,6 +13,7 @@ import com.go.ipmanagement.ipmanagement.dto.IPPoolDTO;
 import com.go.ipmanagement.ipmanagement.entity.IPAddress;
 import com.go.ipmanagement.ipmanagement.entity.IPPool;
 import com.go.ipmanagement.ipmanagement.exception.IPPoolCustomException;
+import com.go.ipmanagement.ipmanagement.exception.IPPoolNotFoundException;
 import com.go.ipmanagement.ipmanagement.mapper.IPPoolDTOMapper;
 import com.go.ipmanagement.ipmanagement.repository.IPAddressRepository;
 import com.go.ipmanagement.ipmanagement.repository.IPPoolRepository;
@@ -38,15 +40,21 @@ public class IPAddressServiceImpl implements IPAddressService {
 	@Override
 	public IPPoolDTO generateIPAdress(int ipAmount, int poolId) {
 
-		IPPool ipPool = ipPoolRepository.findById(poolId).get();
-		if (ipPoolValidations.validateAvailableIP(ipAmount, ipPool)) {
-			List<IPAddress> ipAddress = iPManagementUtility.generateIPAddress(ipPool, ipAmount);
-			ipAddressRepository.saveAll(ipAddress);
-			ipPool.setIpAddresses(ipAddress);
-			ipPool.setUsedCapacity(ipPool.getUsedCapacity() + ipAmount);
-			return IPPoolDTOMapper.getIPPoolDTO(ipPool);
+		Optional<IPPool> ipPool = ipPoolRepository.findById(poolId);
+		if (ipPool.isPresent()) {
+			IPPool pool = ipPool.get();
+			if (ipPoolValidations.validateAvailableIP(ipAmount, pool)) {
+				List<IPAddress> ipAddress = iPManagementUtility.generateIPAddress(pool, ipAmount);
+				ipAddressRepository.saveAll(ipAddress);
+				pool.setIpAddresses(ipAddress);
+				pool.setUsedCapacity(ipPool.get().getUsedCapacity() + ipAmount);
+				return IPPoolDTOMapper.getIPPoolDTO(pool);
+			} else {
+				throw new IPPoolCustomException(IPManagementConstant.ipPoolErrorMessage + poolId);
+			}
 		} else {
-			throw new IPPoolCustomException(IPManagementConstant.ipPoolErrorMessage + poolId);
+			throw new IPPoolNotFoundException(IPManagementConstant.ipPoolNotFoundError + " : " + poolId);
+
 		}
 
 	}
