@@ -15,9 +15,6 @@ public class IPPoolServiceImpl implements IPPoolService{
 	
 	@Override
 	public IPPool getIPPool(int id) {
-		// TODO Auto-generated method stub
-		return iPPoolRepository.getById(id);
+		return iPPoolRepository.findById(id).get();
 	}
-	
-
 }
